@@ -7,12 +7,18 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
 using SixLabors.ImageSharp.Web.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace WeddingImageGallery.Server
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+
+		public static readonly PathString ImageRequestPath = new PathString("/images");
+
+		public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
@@ -49,7 +55,13 @@ namespace WeddingImageGallery.Server
             app.UseImageSharp();
             app.UseStaticFiles();
 
-            app.UseRouting();
+			/*
+			app.UseStaticFiles(new StaticFileOptions() {
+				FileProvider = new PhysicalFileProvider(),
+				RequestPath = ImageRequestPath
+			});*/
+
+			app.UseRouting();
 
             app.UseEndpoints(endpoints =>
             {

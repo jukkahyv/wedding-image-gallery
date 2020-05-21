@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,7 +22,7 @@ namespace WeddingImageGallery.Server.Controllers
 
         private ImageProperties GetImageProperties(string filePath)
         {
-            var requestBase = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}/";
+            var requestBase = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}{Startup.ImageRequestPath.Value}/";
             var relativePath = Path.GetRelativePath(WebRoot, filePath);
             var url = requestBase + relativePath.Replace('\\', '/');
             return new ImageProperties(url);
@@ -33,11 +33,11 @@ namespace WeddingImageGallery.Server.Controllers
 
             var extensions = new[] { ".jpg", ".png" };
 
-            var images = Directory.EnumerateFiles(WebRoot + "\\images", "*.*", SearchOption.AllDirectories)
+            var images = Directory.EnumerateFiles(WebRoot, "*.*", SearchOption.AllDirectories)
                 .Where(i => extensions.Contains(Path.GetExtension(i)))
                 .OrderBy(i => i)
                 .Skip(skip)
-                .Take(50);
+                .Take(Constants.PageSize);
 
             return images.Select(GetImageProperties);
 

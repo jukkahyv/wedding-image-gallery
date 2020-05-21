@@ -1,25 +1,39 @@
-﻿@page "/"
+@page "/"
 @using WeddingImageGallery.Shared
 @inject HttpClient Http
 
 <div id="images">
-@foreach (var image in images)
-{
-    var idx = Array.IndexOf(images, image);
-  <div class="item">
-      <a href="@image.FullUrl" data-lightbox="@("image" + idx)">
-           <img src="@(image.FullUrl)?width=200" alt="Image">
-      </a>
-  </div>
-}
+	@for (int idx = 0; idx < images.Count; ++idx)
+	{
+		var image = images[idx];
+		<div class="item">
+			<a href="@image.FullUrl" data-lightbox="@("image" + idx)">
+				<img src="@(image.FullUrl)?width=200" alt="Image">
+			</a>
+		</div>
+	}
+
+	@if (hasMore)
+	{
+		<button class="btn btn-primary show-more" @onclick="@LoadPage">Show more</button>
+	}
 </div>
 
 @code {
-    private ImageProperties[] images = new ImageProperties[0];
 
-    protected override async Task OnInitializedAsync()
-    {
-        images = await Http.GetFromJsonAsync<ImageProperties[]>("api/images");
-    }
+	private bool hasMore = true;
+	private List<ImageProperties> images = new List<ImageProperties>();
+
+	private async Task LoadPage()
+	{
+		var page = await Http.GetFromJsonAsync<ImageProperties[]>("api/images?skip=" + images.Count);
+		images.AddRange(page);
+		hasMore = page.Length >= Constants.PageSize;
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		await LoadPage();
+	}
 
 }
