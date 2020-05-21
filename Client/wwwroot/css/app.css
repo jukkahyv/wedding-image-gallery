@@ -187,9 +187,11 @@ app {
 .item {
     width: 200px;
     float: left;
+    margin-right: 5px;
+    margin-bottom: 5px;
 }
 
-    .item img {
-        display: block;
-        width: 100%;
-    }
+.item img {
+    display: block;
+    width: 100%;
+}
