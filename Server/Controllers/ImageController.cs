@@ -18,8 +18,6 @@ namespace WeddingImageGallery.Server.Controllers
         public ImageController(IWebHostEnvironment env)
         {
             WebRoot = env.WebRootPath;
-            RequestBase = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}/";
-
         }
 
         private string RequestBase { get; }
@@ -27,8 +25,9 @@ namespace WeddingImageGallery.Server.Controllers
 
         private ImageProperties GetImageProperties(string filePath)
         {
+            var requestBase = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}/";
             var relativePath = Path.GetRelativePath(WebRoot, filePath);
-            var url = RequestBase + relativePath.Replace('\\', '/');
+            var url = requestBase + relativePath.Replace('\\', '/');
             return new ImageProperties(url);
         }
 

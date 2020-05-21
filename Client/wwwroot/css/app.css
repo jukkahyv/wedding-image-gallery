@@ -181,3 +181,15 @@ app {
         display: block;
     }
 }
+
+
+
+.item {
+    width: 200px;
+    float: left;
+}
+
+    .item img {
+        display: block;
+        width: 100%;
+    }
