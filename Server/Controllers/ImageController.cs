@@ -4,26 +4,43 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using WeddingImageGallery.Shared;
 
 namespace WeddingImageGallery.Server.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("/api/images")]
     public class ImageController : ControllerBase
     {
 
-        private string Folder { get; } = @"C:\Users\Jukka\Pictures\CD";
-
-        private async Task<string> GetViewUrl(string file)
+        public ImageController(IWebHostEnvironment env)
         {
+            WebRoot = env.WebRootPath;
+            RequestBase = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}/";
 
         }
 
-        public async Task<IEnumerable<ImageProperties>> GetImages()
+        private string RequestBase { get; }
+        private string WebRoot { get; }
+
+        private ImageProperties GetImageProperties(string filePath)
         {
-            var images = Directory.GetFiles(Folder, "*.jpg;*.png");
+            var relativePath = Path.GetRelativePath(WebRoot, filePath);
+            var url = RequestBase + relativePath.Replace('\\', '/');
+            return new ImageProperties(url);
+        }
+
+        public IEnumerable<ImageProperties> GetImages()
+        {
+
+            var extensions = new[] { ".jpg", ".png" };
+
+            var images = Directory.EnumerateFiles(WebRoot + "\\images", "*.*", SearchOption.AllDirectories)
+                .Where(i => extensions.Contains(Path.GetExtension(i)));
+
+            return images.Select(GetImageProperties);
 
         }
     }

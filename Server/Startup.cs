@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
+using SixLabors.ImageSharp.Web.DependencyInjection;
 
 namespace WeddingImageGallery.Server
 {
@@ -25,6 +26,7 @@ namespace WeddingImageGallery.Server
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddImageSharp();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +46,7 @@ namespace WeddingImageGallery.Server
 
             app.UseHttpsRedirection();
             app.UseBlazorFrameworkFiles();
+            app.UseImageSharp();
             app.UseStaticFiles();
 
             app.UseRouting();
