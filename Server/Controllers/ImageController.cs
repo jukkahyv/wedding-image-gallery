@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using WeddingImageGallery.Server.Models;
 using WeddingImageGallery.Shared;
 
 namespace WeddingImageGallery.Server.Controllers
@@ -13,17 +15,17 @@ namespace WeddingImageGallery.Server.Controllers
     public class ImageController : ControllerBase
     {
 
-        public ImageController(IWebHostEnvironment env)
+        public ImageController(IWebHostEnvironment env, IOptions<Config> config)
         {
-            WebRoot = env.WebRootPath;
+			FilesRoot = config.Value?.ImageFolder ?? (env.WebRootPath + "/images");
         }
 
-        private string WebRoot { get; }
+        private string FilesRoot { get; }
 
         private ImageProperties GetImageProperties(string filePath)
         {
             var requestBase = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}{Startup.ImageRequestPath.Value}/";
-            var relativePath = Path.GetRelativePath(WebRoot, filePath);
+            var relativePath = Path.GetRelativePath(FilesRoot, filePath);
             var url = requestBase + relativePath.Replace('\\', '/');
             return new ImageProperties(url);
         }
@@ -33,7 +35,7 @@ namespace WeddingImageGallery.Server.Controllers
 
             var extensions = new[] { ".jpg", ".png" };
 
-            var images = Directory.EnumerateFiles(WebRoot, "*.*", SearchOption.AllDirectories)
+            var images = Directory.EnumerateFiles(FilesRoot, "*.*", SearchOption.AllDirectories)
                 .Where(i => extensions.Contains(Path.GetExtension(i)))
                 .OrderBy(i => i)
                 .Skip(skip)

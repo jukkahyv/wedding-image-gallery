@@ -340,3 +340,4 @@ ASALocalRun/
 healthchecksdb
 /Server/wwwroot/images
 /Server/wwwroot/is-cache
+/Server/keys.json

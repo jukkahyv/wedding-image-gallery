@@ -10,6 +10,8 @@ using SixLabors.ImageSharp.Web.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using WeddingImageGallery.Server.Models;
+using Microsoft.Extensions.Options;
 
 namespace WeddingImageGallery.Server
 {
@@ -30,13 +32,14 @@ namespace WeddingImageGallery.Server
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllersWithViews();
+			services.Configure<Config>(Configuration);
+			services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddImageSharp();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IOptions<Config> config)
         {
             if (env.IsDevelopment())
             {
@@ -55,11 +58,10 @@ namespace WeddingImageGallery.Server
             app.UseImageSharp();
             app.UseStaticFiles();
 
-			/*
 			app.UseStaticFiles(new StaticFileOptions() {
-				FileProvider = new PhysicalFileProvider(),
+				FileProvider = new PhysicalFileProvider(config.Value.ImageFolder),
 				RequestPath = ImageRequestPath
-			});*/
+			});
 
 			app.UseRouting();
 
