@@ -11,7 +11,7 @@ using WeddingImageGallery.Shared;
 namespace WeddingImageGallery.Server.Controllers
 {
     [ApiController]
-    [Route("/api/images")]
+    [Route("/api/galleries")]
     public class ImageController : ControllerBase
     {
 
@@ -30,12 +30,22 @@ namespace WeddingImageGallery.Server.Controllers
             return new ImageProperties(url);
         }
 
-        public IEnumerable<ImageProperties> GetImages(int skip = 0)
-        {
+		private Gallery GetGallery(string directory) {
+			var path = Path.GetFileName(directory);
+			return new Gallery(path, path);
+		}
+
+		public IEnumerable<Gallery> GetGalleries() {
+			var directories = Directory.GetDirectories(FilesRoot);
+			return directories.Select(dir => GetGallery(dir));
+		}
+
+		[Route("/api/galleries/{gallery}/images")]
+        public IEnumerable<ImageProperties> GetImages(string gallery, int skip = 0) {
 
             var extensions = new[] { ".jpg", ".png" };
 
-            var images = Directory.EnumerateFiles(FilesRoot, "*.*", SearchOption.AllDirectories)
+            var images = Directory.EnumerateFiles(Path.Combine(FilesRoot, @$"{gallery}"), "*.*", SearchOption.TopDirectoryOnly)
                 .Where(i => extensions.Contains(Path.GetExtension(i)))
                 .OrderBy(i => i)
                 .Skip(skip)
@@ -44,5 +54,6 @@ namespace WeddingImageGallery.Server.Controllers
             return images.Select(GetImageProperties);
 
         }
+
     }
 }

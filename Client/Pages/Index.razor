@@ -2,6 +2,15 @@
 @using WeddingImageGallery.Shared
 @inject HttpClient Http
 
+<ul class="nav nav-tabs">
+	@foreach (var gallery in galleries)
+	{
+		<li class="nav-item">
+			<a class="nav-link @(gallery == currentGallery ? "active" : "")" href="#" @onclick="@(() => SetCurrentGallery(gallery))">@gallery.Name</a>
+		</li>
+	}
+</ul>
+
 <div id="images">
 	@for (int idx = 0; idx < images.Count; ++idx)
 	{
@@ -22,17 +31,30 @@
 @code {
 
 	private bool hasMore = true;
+	private Gallery[] galleries = new Gallery[0];
+	private Gallery currentGallery = null;
 	private List<ImageProperties> images = new List<ImageProperties>();
 
 	private async Task LoadPage()
 	{
-		var page = await Http.GetFromJsonAsync<ImageProperties[]>("api/images?skip=" + images.Count);
+		if (currentGallery == null)
+			return;
+		var page = await Http.GetFromJsonAsync<ImageProperties[]>("api/galleries/" + currentGallery.Path + "/images?skip=" + images.Count);
 		images.AddRange(page);
 		hasMore = page.Length >= Constants.PageSize;
 	}
 
+	private async Task SetCurrentGallery(Gallery gallery)
+	{
+		images.Clear();
+		currentGallery = gallery;
+		await LoadPage();
+	}
+
 	protected override async Task OnInitializedAsync()
 	{
+		galleries = await Http.GetFromJsonAsync<Gallery[]>("api/galleries");
+		currentGallery = galleries.FirstOrDefault();
 		await LoadPage();
 	}
 
