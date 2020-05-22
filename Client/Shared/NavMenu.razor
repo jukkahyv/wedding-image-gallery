@@ -1,5 +1,5 @@
 @using WeddingImageGallery.Shared
-@inject NavigationManager NavigationManager
+@inject NavigationManager NavManager
 @inject HttpClient Http
 
 <ul class="nav nav-tabs">
@@ -28,7 +28,7 @@
 		galleries = await Http.GetFromJsonAsync<Gallery[]>("api/galleries");
 		if (galleries.Any())
 		{
-			NavigationManager.NavigateTo(galleries.First().Path);
+			NavManager.NavigateTo(galleries.First().Path);
 		}
 	}
 

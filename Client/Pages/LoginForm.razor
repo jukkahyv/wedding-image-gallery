@@ -1,0 +1,35 @@
+@using WeddingImageGallery.Shared
+@inject HttpClient Http
+
+<div class="login-form-wrapper">
+    <form @onsubmit="@CheckPassword" class="form-inline login-form">
+        <label>Password:</label>
+        <input type="text" @bind="@password" required class="form-control" />
+        <button type="submit" class="btn btn-primary">Submit</button>
+            
+        @if (passwordWrong) {
+            <div class="alert-danger login-form-error">Password wrong</div>
+        }
+    </form>        
+</div>
+
+@code {
+	bool passwordCorrect;
+	bool passwordWrong;
+	string password;
+
+	private async Task CheckPassword() {
+		var result = await Http.GetFromJsonAsync<PasswordCheckResult>("/api/user/check-password?password=" + password);
+		passwordCorrect = result.PasswordValid;
+		passwordWrong = !passwordCorrect;
+		if (passwordCorrect)
+		{
+			PasswordCheckResult.PasswordValid();
+			//await AuthenticatedCallback.InvokeAsync(new EventArgs());
+		}
+	}
+
+    [CascadingParameter]
+    PasswordCheckContext PasswordCheckResult { get; set; }
+
+}
