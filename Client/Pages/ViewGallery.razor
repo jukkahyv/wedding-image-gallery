@@ -4,21 +4,20 @@
 
 <div id="images-wrapper">
 	<div id="images">
-		@for (int idx = 0; idx < images.Count; ++idx)
+		@foreach (var image in images)
 		{
-			var image = images[idx];
 			<div class="item">
 				<a href="@image.FullUrl" data-lightbox="@GalleryPath">
-					<img src="@(image.FullUrl)?width=200" alt="Image">
+					<img src="@(image.FullUrl)?width=200" alt="@image.Name">
 				</a>
 			</div>
 		}
-
-		@if (hasMore)
-		{
-			<button class="btn btn-primary show-more" @onclick="@LoadPage">Show more</button>
-		}
 	</div>
+
+	@if (hasMore)
+	{
+		<button class="btn btn-primary show-more" @onclick="@LoadPage">Show more</button>
+	}
 </div>
 
 @code {

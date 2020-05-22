@@ -27,7 +27,7 @@ namespace WeddingImageGallery.Server.Controllers
             var requestBase = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}{Startup.ImageRequestPath.Value}/";
             var relativePath = Path.GetRelativePath(FilesRoot, filePath);
             var url = requestBase + relativePath.Replace('\\', '/');
-            return new ImageProperties(url);
+            return new ImageProperties(url, Path.GetFileName(filePath));
         }
 
 		private Gallery GetGallery(string directory) {

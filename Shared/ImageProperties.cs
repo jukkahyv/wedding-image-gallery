@@ -1,4 +1,4 @@
-﻿
+
 namespace WeddingImageGallery.Shared
 {
     public class ImageProperties
@@ -7,11 +7,13 @@ namespace WeddingImageGallery.Shared
         {
         }
 
-        public ImageProperties(string fullUrl)
+        public ImageProperties(string fullUrl, string name)
         {
             FullUrl = fullUrl;
+			Name = name;
         }
 
         public string FullUrl { get; set; }
+		public string Name { get; set; }
     }
 }
