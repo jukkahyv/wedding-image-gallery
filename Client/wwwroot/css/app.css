@@ -231,3 +231,16 @@ app {
 .login-form-error {
 	margin-top: 10px;
 }
+
+.language-bar {
+	height: 60px;
+	position: absolute;
+}
+
+.language-bar .language-select {
+	height: 30px;
+}
+
+.gallery-tabs {
+	margin-top: 40px;
+}

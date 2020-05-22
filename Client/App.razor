@@ -1,7 +1,12 @@
+@inject NavigationManager NavManager
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+
 <Router AppAssembly="@typeof(Program).Assembly">
     <Found Context="routeData">
         <CascadingValue Value="@PasswordCheckResult">
-            <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+            <CascadingValue Value="@LanguageContext">
+                <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+            </CascadingValue>
         </CascadingValue>
     </Found>
     <NotFound>
@@ -12,5 +17,15 @@
 </Router>
 
 @code {
+    LanguageContext LanguageContext { get; set; } = new LanguageContext();
     PasswordCheckContext PasswordCheckResult { get; set; } = new PasswordCheckContext();
+
+	protected override void OnInitialized()
+	{
+        LanguageContext.LanguageChanged = async (lang) => {
+            await localStorage.SetItemAsync("Language", lang);
+            NavManager.NavigateTo(NavManager.Uri, forceLoad: true);
+        };
+	}
+
 }

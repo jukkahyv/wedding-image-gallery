@@ -1,16 +1,13 @@
 using System;
 using System.Net.Http;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Text;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using System.Globalization;
+using Blazored.LocalStorage;
 
-namespace WeddingImageGallery.Client
-{
-    public class Program
+namespace WeddingImageGallery.Client {
+	public class Program
     {
         public static async Task Main(string[] args)
         {
@@ -18,8 +15,20 @@ namespace WeddingImageGallery.Client
             builder.RootComponents.Add<App>("app");
 
             builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+			builder.Services.AddLocalization();
+			builder.Services.AddBlazoredLocalStorage();
 
-            await builder.Build().RunAsync();
+			var host = builder.Build();
+			var localStorage = host.Services.GetRequiredService<ILocalStorageService>();
+
+			var language = await localStorage.GetItemAsync<Language?>("Language");
+			if (language != null) {
+				var culture = new CultureInfo(language == Language.Finnish ? "fi-FI" : "en-US");
+				CultureInfo.DefaultThreadCurrentCulture = culture;
+				CultureInfo.DefaultThreadCurrentUICulture = culture;
+			}
+
+			await host.RunAsync();
         }
     }
 }

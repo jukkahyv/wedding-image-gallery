@@ -1,11 +1,12 @@
 @using WeddingImageGallery.Shared
 @inject HttpClient Http
+@inject Microsoft.Extensions.Localization.IStringLocalizer<App> Loc
 
 <div class="login-form-wrapper">
     <form @onsubmit="@CheckPassword" class="form-inline login-form">
-        <label>Password:</label>
+        <label>@Loc["Password"]:</label>
         <input type="text" @bind="@password" required class="form-control" />
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">@Loc["Submit"]</button>
             
         @if (passwordWrong) {
             <div class="alert-danger login-form-error">Password wrong</div>

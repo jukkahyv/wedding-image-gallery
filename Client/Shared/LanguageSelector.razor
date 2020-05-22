@@ -1,0 +1,17 @@
+<nav class="language-bar">
+    <div class="btn-group btn-group-toggle">
+        <label class="btn btn-secondary @(LanguageContext.Language == Language.Finnish ? "active" : "")">
+            <input type="radio" name="options" id="option1" autocomplete="off" checked="@(LanguageContext.Language == Language.Finnish)" @onchange="@(() => LanguageContext.SetLanguage(Language.Finnish))" />
+            <img src="css/fin-flag.png" alt="Suomi" title="Suomeksi" class="language-select"/>
+        </label>
+        <label class="btn btn-secondary @(LanguageContext.Language == Language.English ? "active" : "")">
+            <input type="radio" name="options" id="option1" autocomplete="off" checked="@(LanguageContext.Language == Language.English)" @onchange="@(() => LanguageContext.SetLanguage(Language.English))" />
+            <img src="css/eng-flag.png" alt="English" title="In English" class="language-select"/>
+        </label>
+    </div>
+</nav>
+
+@code {
+    [CascadingParameter]
+    LanguageContext LanguageContext { get; set; }
+}
