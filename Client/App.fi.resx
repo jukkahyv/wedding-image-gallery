@@ -120,6 +120,12 @@
   <data name="Password" xml:space="preserve">
     <value>Salasana</value>
   </data>
+  <data name="Password wrong" xml:space="preserve">
+    <value>Ups! Väärä salasana. Yritä uudelleen :)</value>
+  </data>
+  <data name="ShowMore" xml:space="preserve">
+    <value>Näytä lisää</value>
+  </data>
   <data name="Submit" xml:space="preserve">
     <value>Lähetä</value>
   </data>

@@ -1,6 +1,7 @@
 @page "/{galleryPath}"
 @using WeddingImageGallery.Shared
 @inject HttpClient Http
+@inject Microsoft.Extensions.Localization.IStringLocalizer<App> Loc
 
 <div id="images-wrapper">
 	<div id="images">
@@ -16,7 +17,7 @@
 
 	@if (hasMore)
 	{
-		<button class="btn btn-primary show-more" @onclick="@LoadPage">Show more</button>
+		<button class="btn btn-primary show-more" @onclick="@LoadPage">@Loc["ShowMore"]</button>
 	}
 </div>
 

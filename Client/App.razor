@@ -23,6 +23,7 @@
 	protected override void OnInitialized()
 	{
         LanguageContext.LanguageChanged = async (lang) => {
+            // From https://github.com/pranavkm/LocSample
             await localStorage.SetItemAsync("Language", lang);
             NavManager.NavigateTo(NavManager.Uri, forceLoad: true);
         };
