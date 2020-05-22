@@ -1,0 +1,49 @@
+@page "/{galleryPath}"
+@using WeddingImageGallery.Shared
+@inject HttpClient Http
+
+<div id="images-wrapper">
+	<div id="images">
+		@for (int idx = 0; idx < images.Count; ++idx)
+		{
+			var image = images[idx];
+			<div class="item">
+				<a href="@image.FullUrl" data-lightbox="@("image" + idx)">
+					<img src="@(image.FullUrl)?width=200" alt="Image">
+				</a>
+			</div>
+		}
+
+		@if (hasMore)
+		{
+			<button class="btn btn-primary show-more" @onclick="@LoadPage">Show more</button>
+		}
+	</div>
+</div>
+
+@code {
+	[Parameter]
+	public string GalleryPath { get; set; }
+
+	private bool hasMore = true;
+	private List<ImageProperties> images = new List<ImageProperties>();
+
+	private async Task LoadPage()
+	{
+		var page = await Http.GetFromJsonAsync<ImageProperties[]>("api/galleries/" + GalleryPath + "/images?skip=" + images.Count);
+		images.AddRange(page);
+		hasMore = page.Length >= Constants.PageSize;
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		//await LoadPage();
+	}
+
+	protected override async Task OnParametersSetAsync()
+	{
+		images.Clear();
+		await LoadPage();
+	}
+
+}

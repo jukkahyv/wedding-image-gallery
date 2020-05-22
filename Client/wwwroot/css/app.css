@@ -183,12 +183,19 @@ app {
 }
 
 /* CUSTOM STYLES */
+#images {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
 .item {
-    width: 200px;
-	height: 133px;
-    float: left;
-    margin-right: 8px;
-    margin-bottom: 8px;
+	width: 200px;
+	/*height: 133px;*/
+	/*height: 300px;*/
+	float: left;
+	margin-right: 8px;
+	margin-bottom: 8px;
 }
 
 .item img {
