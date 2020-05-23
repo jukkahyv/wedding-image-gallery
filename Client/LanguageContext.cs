@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.Threading.Tasks;
+using WeddingImageGallery.Shared;
 
 namespace WeddingImageGallery.Client {
 	public class LanguageContext {
@@ -15,10 +16,5 @@ namespace WeddingImageGallery.Client {
 			Language = language;
 			await LanguageChanged(language);
 		}
-	}
-
-	public enum Language {
-		Finnish,
-		English
 	}
 }

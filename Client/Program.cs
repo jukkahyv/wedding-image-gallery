@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System.Globalization;
 using Blazored.LocalStorage;
+using WeddingImageGallery.Shared;
 
 namespace WeddingImageGallery.Client {
 	public class Program

@@ -17,9 +17,11 @@ namespace WeddingImageGallery.Server.Controllers
 
         public ImageController(IWebHostEnvironment env, IOptions<Config> config)
         {
-			FilesRoot = config.Value?.ImageFolder ?? (env.WebRootPath + "/images");
+			Config = config.Value;
+			FilesRoot = Config?.ImageFolder ?? (env.WebRootPath + "/images");
         }
 
+		private Config Config { get; }
         private string FilesRoot { get; }
 
         private ImageProperties GetImageProperties(string filePath)
@@ -30,14 +32,19 @@ namespace WeddingImageGallery.Server.Controllers
             return new ImageProperties(url, Path.GetFileName(filePath));
         }
 
-		private Gallery GetGallery(string directory) {
-			var path = Path.GetFileName(directory);
-			return new Gallery(path, path);
+		private string GetGalleryName(string path, Language language) {
+			var coll = language == Language.English ? Config.GalleryNamesEn : Config.GalleryNamesFi;
+			return coll.TryGetValue(path, out var name) ? name : path;
 		}
 
-		public IEnumerable<Gallery> GetGalleries() {
+		private Gallery GetGallery(string directory, Language language) {
+			var path = Path.GetFileName(directory);
+			return new Gallery(path, GetGalleryName(path, language));
+		}
+
+		public IEnumerable<Gallery> GetGalleries(Language language) {
 			var directories = Directory.GetDirectories(FilesRoot);
-			return directories.Select(dir => GetGallery(dir));
+			return directories.Select(dir => GetGallery(dir, language));
 		}
 
 		[Route("/api/galleries/{gallery}/images")]

@@ -15,6 +15,9 @@
 
 @code {
 
+    [CascadingParameter]
+    LanguageContext LanguageContext { get; set; }
+
 	private Gallery[] galleries = new Gallery[0];
 	private Gallery currentGallery = null;
 
@@ -25,7 +28,7 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		galleries = await Http.GetFromJsonAsync<Gallery[]>("api/galleries");
+		galleries = await Http.GetFromJsonAsync<Gallery[]>("api/galleries?language=" + LanguageContext.Language);
 		if (galleries.Any())
 		{
 			NavManager.NavigateTo(galleries.First().Path);
