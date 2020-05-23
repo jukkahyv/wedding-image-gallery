@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -24,3 +24,11 @@
 </body>
 
 </html>
+
+<script type="text/javascript">
+    window.js = {
+        getBrowserLocale: function () {
+            return (navigator.languages && navigator.languages.length) ? navigator.languages[0] : navigator.userLanguage || navigator.language || navigator.browserLanguage || 'en';
+        }
+    };
+</script>
