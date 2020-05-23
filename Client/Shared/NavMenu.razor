@@ -1,6 +1,7 @@
 @using WeddingImageGallery.Shared
 @inject NavigationManager NavManager
 @inject HttpClient Http
+@inject LanguageContext LangContext
 
 <ul class="nav nav-tabs gallery-tabs">
 	@foreach (var gallery in galleries)
@@ -15,9 +16,6 @@
 
 @code {
 
-    [CascadingParameter]
-    LanguageContext LanguageContext { get; set; }
-
 	private Gallery[] galleries = new Gallery[0];
 	private Gallery currentGallery = null;
 
@@ -28,7 +26,7 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		galleries = await Http.GetFromJsonAsync<Gallery[]>("api/galleries?language=" + LanguageContext.Language);
+		galleries = await Http.GetFromJsonAsync<Gallery[]>("api/galleries?language=" + LangContext.Language);
 		if (galleries.Any())
 		{
 			NavManager.NavigateTo(galleries.First().Path);

@@ -29,6 +29,9 @@ namespace WeddingImageGallery.Client {
 				CultureInfo.DefaultThreadCurrentUICulture = culture;
 			}
 
+			builder.Services.AddSingleton(new LanguageContext(language ?? Language.English));
+			host = builder.Build();
+
 			await host.RunAsync();
         }
     }
