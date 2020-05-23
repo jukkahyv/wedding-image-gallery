@@ -25,7 +25,7 @@ namespace WeddingImageGallery.Client {
 				.AddBlazoredLocalStorage()
 				.AddSingleton<PasswordCheckContext>()
 				.AddLocalization()
-				// Without these, Unhandled exception rendering component: A suitable constructor for type 'Microsoft.Extensions.Localization.StringLocalizer`1[WeddingImageGallery.Client.Pages.LoginForm]' could not be located. Ensure the type is concrete and services are registered for all parameters of a public constructor.
+				// Without these, Unhandled exception rendering component: A suitable constructor for type 'Microsoft.Extensions.Localization.StringLocalizer`1[WeddingImageGallery.Client.Pages.App]' could not be located. Ensure the type is concrete and services are registered for all parameters of a public constructor.
 				.AddSingleton(sp => new ResourceManagerStringLocalizerFactory(Options.Create(new LocalizationOptions { ResourcesPath = "." }), sp.GetRequiredService<ILoggerFactory>()))
 				.AddSingleton(sp => new StringLocalizer<LoginForm>(sp.GetRequiredService<IStringLocalizerFactory>()))
 				.AddSingleton(sp => new StringLocalizer<App>(sp.GetRequiredService<IStringLocalizerFactory>()))
@@ -41,6 +41,8 @@ namespace WeddingImageGallery.Client {
 
 			builder.Services.AddSingleton(new LanguageContext(language));
 			host = builder.Build();
+
+			Console.WriteLine(host.Services.GetRequiredService<IOptions<LocalizationOptions>>().Value.ResourcesPath);
 
 			await host.RunAsync();
         }
