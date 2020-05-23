@@ -1,9 +1,7 @@
 
 <Router AppAssembly="@typeof(Program).Assembly">
     <Found Context="routeData">
-        <CascadingValue Value="@PasswordCheckResult">            
-            <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-        </CascadingValue>
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
     </Found>
     <NotFound>
         <LayoutView Layout="@typeof(MainLayout)">
@@ -11,7 +9,3 @@
         </LayoutView>
     </NotFound>
 </Router>
-
-@code {
-    PasswordCheckContext PasswordCheckResult { get; set; } = new PasswordCheckContext();
-}

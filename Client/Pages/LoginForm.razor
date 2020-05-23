@@ -1,6 +1,7 @@
 @using WeddingImageGallery.Shared
 @inject HttpClient Http
 @inject Microsoft.Extensions.Localization.IStringLocalizer<App> Loc
+@inject PasswordCheckContext PasswordCheckResult
 
 <div class="login-form-wrapper">
     <form @onsubmit="@CheckPassword" class="form-inline login-form">
@@ -28,8 +29,5 @@
 			PasswordCheckResult.PasswordValid();
 		}
 	}
-
-    [CascadingParameter]
-    PasswordCheckContext PasswordCheckResult { get; set; }
 
 }

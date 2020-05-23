@@ -15,9 +15,11 @@ namespace WeddingImageGallery.Client {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
 
-            builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-			builder.Services.AddLocalization();
-			builder.Services.AddBlazoredLocalStorage();
+            builder.Services
+				.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) })
+				.AddLocalization()
+				.AddBlazoredLocalStorage()
+				.AddSingleton<PasswordCheckContext>();
 
 			var host = builder.Build();
 			var localStorage = host.Services.GetRequiredService<ILocalStorageService>();

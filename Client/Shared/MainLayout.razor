@@ -1,11 +1,6 @@
 @inherits LayoutComponentBase
 @inject NavigationManager NavManager
-
-@*
-<div class="sidebar">
-    <NavMenu />
-</div>
-*@
+@inject PasswordCheckContext PasswordCheckResult
 
 <div class="main">
     <LanguageSelector />
@@ -23,12 +18,8 @@
 </div>
 
 @code {
-    [CascadingParameter]
-    PasswordCheckContext PasswordCheckResult { get; set; }
-
 	protected override void OnInitialized()
 	{
         PasswordCheckResult.PasswordValidChanged = () => StateHasChanged();
 	}
-
 } 
