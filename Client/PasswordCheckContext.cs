@@ -6,7 +6,7 @@ namespace WeddingImageGallery.Client {
 		public bool PasswordIsValid { get; private set; }
 		public void PasswordValid() {
 			PasswordIsValid = true;
-			PasswordValidChanged();
+			PasswordValidChanged?.Invoke();
 		}
 	}
 }
