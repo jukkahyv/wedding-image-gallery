@@ -7,6 +7,10 @@ using System.Globalization;
 using Blazored.LocalStorage;
 using WeddingImageGallery.Shared;
 using Microsoft.JSInterop;
+using Microsoft.Extensions.Localization;
+using WeddingImageGallery.Client.Pages;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace WeddingImageGallery.Client {
 	public class Program
@@ -18,9 +22,14 @@ namespace WeddingImageGallery.Client {
 
             builder.Services
 				.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) })
-				.AddLocalization()
 				.AddBlazoredLocalStorage()
-				.AddSingleton<PasswordCheckContext>();
+				.AddSingleton<PasswordCheckContext>()
+				.AddLocalization()
+				// Without these, Unhandled exception rendering component: A suitable constructor for type 'Microsoft.Extensions.Localization.StringLocalizer`1[WeddingImageGallery.Client.Pages.LoginForm]' could not be located. Ensure the type is concrete and services are registered for all parameters of a public constructor.
+				.AddSingleton(sp => new ResourceManagerStringLocalizerFactory(Options.Create(new LocalizationOptions { ResourcesPath = "." }), sp.GetRequiredService<ILoggerFactory>()))
+				.AddSingleton(sp => new StringLocalizer<LoginForm>(sp.GetRequiredService<IStringLocalizerFactory>()))
+				.AddSingleton(sp => new StringLocalizer<App>(sp.GetRequiredService<IStringLocalizerFactory>()))
+				;
 
 			var host = builder.Build();
 			var localStorage = host.Services.GetRequiredService<ILocalStorageService>();
