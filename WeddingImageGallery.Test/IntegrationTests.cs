@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using System.Threading.Tasks;
 using WeddingImageGallery.Server;
 using Xunit;
+using System.Net.Http;
+using WeddingImageGallery.Shared;
+using FluentAssertions;
 
 namespace WeddingImageGallery.Test {
 
@@ -21,6 +24,9 @@ namespace WeddingImageGallery.Test {
 			var response = await client.GetAsync("/api/galleries");
 
 			response.EnsureSuccessStatusCode();
+			var galleries = await response.Content.ReadAsAsync<Gallery[]>();
+
+			galleries.Should().NotBeEmpty();
 
 		}
 
