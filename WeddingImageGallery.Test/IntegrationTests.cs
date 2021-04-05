@@ -13,18 +13,19 @@ namespace WeddingImageGallery.Test {
 	/// </summary>
 	public class IntegrationTests : IClassFixture<WebApplicationFactory<Startup>> {
 
-		private readonly WebApplicationFactory<Startup> factory;
-
 		public IntegrationTests(WebApplicationFactory<Startup> factory) {
-			this.factory = factory;
+			_factory = factory;
+			_client = _factory.CreateClient();
 		}
+
+		private readonly HttpClient _client;
+		private readonly WebApplicationFactory<Startup> _factory;
 
 		[Fact]
 		public async Task GetGalleries() {
 
-			var client = factory.CreateClient();
 
-			var response = await client.GetAsync("/api/galleries");
+			var response = await _client.GetAsync("/api/galleries");
 
 			response.EnsureSuccessStatusCode();
 			var galleries = await response.Content.ReadAsAsync<Gallery[]>();
