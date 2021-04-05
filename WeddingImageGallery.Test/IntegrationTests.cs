@@ -8,6 +8,9 @@ using FluentAssertions;
 
 namespace WeddingImageGallery.Test {
 
+	/// <summary>
+	/// ASP.NET integration tests
+	/// </summary>
 	public class IntegrationTests : IClassFixture<WebApplicationFactory<Startup>> {
 
 		private readonly WebApplicationFactory<Startup> factory;
@@ -27,6 +30,8 @@ namespace WeddingImageGallery.Test {
 			var galleries = await response.Content.ReadAsAsync<Gallery[]>();
 
 			galleries.Should().NotBeEmpty();
+
+			// TODO: refactor ImageController to use virtual filesystem + add more asserts
 
 		}
 

@@ -21,4 +21,8 @@
     <ProjectReference Include="..\Shared\WeddingImageGallery.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="TestData\MyGallery\" />
+  </ItemGroup>
+
 </Project>
