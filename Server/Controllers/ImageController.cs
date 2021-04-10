@@ -53,7 +53,7 @@ namespace WeddingImageGallery.Server.Controllers
             var extensions = new[] { ".jpg", ".png" };
 
             var images = Directory.EnumerateFiles(Path.Combine(FilesRoot, @$"{gallery}"), "*.*", SearchOption.TopDirectoryOnly)
-                .Where(i => extensions.Contains(Path.GetExtension(i)))
+                .Where(i => extensions.Contains(Path.GetExtension(i).ToLowerInvariant()))
                 .OrderBy(i => i)
                 .Skip(skip)
                 .Take(Constants.PageSize);
