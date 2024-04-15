@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="3.2.0" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-rc0001" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="2.1.8" />
     <PackageReference Include="SixLabors.ImageSharp.Web" Version="1.0.0-rc0001" />
   </ItemGroup>
 
